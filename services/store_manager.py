@@ -1,6 +1,6 @@
 import json
 import os
-from models.product import Product, Apparel, Accessory, Footwear
+from models.product import Product, Apparel, Pants, Accessory, Footwear
 from models.user import User, Customer, Admin, hash_password
 from models.order import Order
 from models.exceptions import AuthenticationException
@@ -106,21 +106,25 @@ class StoreManager:
             'name':       p.get_name(),
             'price':      p.get_price(),
             'stock':      p.get_stock(),
+            'image_path': p.get_image_path(),
         }
-        if isinstance(p, Apparel):
+        if isinstance(p, (Apparel, Pants)):
             d['size'] = p.get_size()
         elif isinstance(p, Footwear):
             d['shoe_size'] = p.get_shoe_size()
         return d
 
     def __dict_to_product(self, d: dict) -> Product | None:
-        t = d.get('type')
+        t    = d.get('type')
+        img  = d.get('image_path', '')
         if t == 'Apparel':
-            return Apparel(d['product_id'], d['name'], d['price'], d['stock'], d['size'])
+            return Apparel(d['product_id'], d['name'], d['price'], d['stock'], d['size'], img)
+        if t == 'Pants':
+            return Pants(d['product_id'], d['name'], d['price'], d['stock'], d['size'], img)
         if t == 'Accessory':
-            return Accessory(d['product_id'], d['name'], d['price'], d['stock'])
+            return Accessory(d['product_id'], d['name'], d['price'], d['stock'], img)
         if t == 'Footwear':
-            return Footwear(d['product_id'], d['name'], d['price'], d['stock'], d['shoe_size'])
+            return Footwear(d['product_id'], d['name'], d['price'], d['stock'], d['shoe_size'], img)
         return None
 
     # --- private: users ---

@@ -3,6 +3,7 @@ from tkinter import ttk
 from services.store_manager import StoreManager
 from models.basket import Basket
 from models.exceptions import InvalidOrderException, OutOfStockException
+from gui import image_loader
 
 BG     = "white"
 FG     = "#1A1A1A"
@@ -102,10 +103,14 @@ class OrderPanel(tk.Frame):
         row = tk.Frame(self._items_frame, bg=BG)
         row.pack(fill=tk.X, pady=8)
 
-        img = tk.Canvas(row, width=76, height=76,
-                        bg=IMG_BG, highlightthickness=0)
+        img = tk.Label(row, width=76, height=76, bg=IMG_BG)
+        photo = image_loader.load(product.get_image_path(), (76, 76))
+        if photo:
+            img.config(image=photo)
+            img.image = photo
+        else:
+            img.config(text="[ ]", font=("Arial", 9), fg="#C0C0C0")
         img.pack(side=tk.LEFT, padx=(0, 18))
-        img.create_text(38, 38, text="[ ]", font=("Arial", 9), fill="#C0C0C0")
 
         info = tk.Frame(row, bg=BG)
         info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)

@@ -6,3 +6,18 @@
 [2026-05-20 19:52:32] User 'Bob' logged in.
 [2026-05-20 19:52:32] Failed login for 'Alice' — wrong password.
 [2026-05-20 19:52:32] Failed login — user 'Ghost' not found.
+[2026-05-20 19:54:44] Data loaded from disk.
+[2026-05-20 19:54:59] Data saved to disk.
+[2026-05-20 19:55:04] User 'alice' logged in.
+[2026-05-20 19:55:17] Order[5bb004c4] confirmed — items: [Watch] — total: $89.99
+[2026-05-20 19:55:17] Data saved to disk.
+[2026-05-20 19:55:19] Data saved to disk.
+[2026-05-20 19:55:23] User 'admin' logged in.
+[2026-05-20 20:23:08] Data loaded from disk.
+[2026-05-20 20:23:24] User 'alice' logged in.
+[2026-05-20 20:25:52] Data loaded from disk.
+[2026-05-20 20:26:01] User 'alice' logged in.
+[2026-05-20 20:28:39] Data loaded from disk.
+[2026-05-20 20:28:46] User 'alice' logged in.
+[2026-05-20 20:35:22] Data loaded from disk.
+[2026-05-20 20:35:42] User 'alice' logged in.

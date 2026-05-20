@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from services.store_manager import StoreManager
 from models.basket import Basket
 from models.exceptions import OutOfStockException
+from gui import image_loader
 
 BG        = "white"
 CARD_BG   = "white"
@@ -31,7 +32,8 @@ class ProductCatalogPanel(tk.Frame):
         search_var.trace_add("write", lambda *_: self._refresh())
 
     def _build_ui(self) -> None:
-        title = {"Apparel": "CLOTHING", "Footwear": "SHOES",
+        title = {"Apparel": "TOPS", "Pants": "PANTS",
+                 "Footwear": "SHOES",
                  "Accessory": "ACCESSORIES"}.get(self._category, "ALL PRODUCTS")
 
         tk.Label(self, text=title, font=("Arial", 12, "bold"),
@@ -103,11 +105,15 @@ class ProductCatalogPanel(tk.Frame):
         card = tk.Frame(self._inner, bg=CARD_BG, width=CARD_W, cursor="hand2")
         card.grid_propagate(False)
 
-        img = tk.Canvas(card, width=CARD_W, height=220,
-                        bg=IMG_BG, highlightthickness=0)
+        img = tk.Label(card, width=CARD_W, height=220,
+                       bg=IMG_BG, highlightthickness=0)
+        photo = image_loader.load(product.get_image_path(), (CARD_W, 220))
+        if photo:
+            img.config(image=photo)
+            img.image = photo
+        else:
+            img.config(text="[ Photo ]", font=("Arial", 10), fg="#C0C0C0")
         img.pack()
-        img.create_text(CARD_W // 2, 110, text="[ Photo ]",
-                        font=("Arial", 10), fill="#C0C0C0")
 
         info = tk.Frame(card, bg=CARD_BG, padx=10, pady=8)
         info.pack(fill=tk.X)
@@ -132,11 +138,12 @@ class ProductCatalogPanel(tk.Frame):
         if product.get_stock() == 0:
             add_btn.config(state=tk.DISABLED, bg="#CCCCCC")
 
-        all_w = [card, img, info] + list(info.winfo_children())
+        hover_ws = [card, info] + list(info.winfo_children())
+        all_w    = hover_ws + [img]
         for w in all_w:
-            w.bind("<Enter>", lambda e, ws=all_w, btn=add_btn:
+            w.bind("<Enter>", lambda e, ws=hover_ws, btn=add_btn:
                    [x.config(bg=HOVER_BG) for x in ws if x is not btn])
-            w.bind("<Leave>", lambda e, ws=all_w, btn=add_btn:
+            w.bind("<Leave>", lambda e, ws=hover_ws, btn=add_btn:
                    [x.config(bg=CARD_BG) for x in ws if x is not btn])
 
         return card
@@ -144,14 +151,14 @@ class ProductCatalogPanel(tk.Frame):
     def _add(self, product, card: tk.Frame) -> None:
         try:
             self._basket.add_product(product)
-            widgets = [card] + list(card.winfo_children())
-            for w in widgets:
+            flash_ws = [w for w in [card] + list(card.winfo_children())
+                        if isinstance(w, (tk.Frame, tk.Label))]
+            for w in flash_ws:
                 try:
                     w.config(bg="#E8F5E9")
                 except tk.TclError:
                     pass
             card.after(500, lambda: [w.config(bg=CARD_BG)
-                                     for w in widgets
-                                     if isinstance(w, (tk.Frame, tk.Label))])
+                                     for w in flash_ws])
         except OutOfStockException as e:
             messagebox.showwarning("Out of stock", e.get_message(), parent=self)

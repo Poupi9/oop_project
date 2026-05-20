@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
 from services.store_manager import StoreManager
-from models.product import Apparel, Accessory, Footwear
+from models.product import Apparel, Pants, Accessory, Footwear
 
 
 class AdminPanel(tk.Frame):
@@ -78,6 +78,8 @@ class AdminPanel(tk.Frame):
         p_type, pid, name, price, stock, extra = dialog.result
         if p_type == "Apparel":
             product = Apparel(pid, name, price, stock, extra)
+        elif p_type == "Pants":
+            product = Pants(pid, name, price, stock, extra)
         elif p_type == "Footwear":
             product = Footwear(pid, name, price, stock, float(extra))
         else:
@@ -190,7 +192,7 @@ class _AddProductDialog(tk.Toplevel):
         tk.Label(self, text="Type:").grid(row=0, column=0, sticky="w", **pad)
         self._type_var = tk.StringVar(value="Apparel")
         cb = ttk.Combobox(self, textvariable=self._type_var, state="readonly",
-                          values=["Apparel", "Accessory", "Footwear"], width=20)
+                          values=["Apparel", "Pants", "Accessory", "Footwear"], width=20)
         cb.grid(row=0, column=1, **pad)
         cb.bind("<<ComboboxSelected>>", self._on_type_change)
 
@@ -214,8 +216,8 @@ class _AddProductDialog(tk.Toplevel):
 
     def _on_type_change(self, _=None) -> None:
         t = self._type_var.get()
-        if t in ("Apparel", "Footwear"):
-            self._extra_lbl.config(text="Size:" if t == "Apparel" else "Shoe size:")
+        if t in ("Apparel", "Pants", "Footwear"):
+            self._extra_lbl.config(text="Shoe size:" if t == "Footwear" else "Size:")
             self._extra_lbl.grid()
             self._extra_entry.grid()
         else:
@@ -229,7 +231,7 @@ class _AddProductDialog(tk.Toplevel):
             name   = self._entries["name"].get().strip()
             price  = float(self._entries["price"].get())
             stock  = int(self._entries["stock"].get())
-            extra  = self._extra_entry.get().strip() if p_type in ("Apparel", "Footwear") else None
+            extra  = self._extra_entry.get().strip() if p_type in ("Apparel", "Pants", "Footwear") else None
             if not pid or not name:
                 raise ValueError("ID and Name are required.")
             self.result = (p_type, pid, name, price, stock, extra)

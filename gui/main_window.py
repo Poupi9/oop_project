@@ -13,7 +13,7 @@ BORDER = "#E8E8E8"
 class MainWindow:
     def __init__(self):
         self._root = tk.Tk()
-        self._root.title("ShopApp")
+        self._root.title("Archive-Store")
         self._root.geometry("1100x720")
         self._root.configure(bg=BG)
         self._root.minsize(900, 600)
@@ -61,12 +61,16 @@ class MainWindow:
         left = tk.Frame(self._header, bg=BG)
         left.pack(side=tk.LEFT, fill=tk.Y, padx=(24, 0))
 
-        tk.Label(left, text="SHOPAPP", font=("Arial", 13, "bold"),
+        tk.Label(left, text="ARCHIVE-STORE", font=("Arial", 13, "bold"),
                  bg=BG, fg=FG).pack(side=tk.LEFT, padx=(0, 32))
 
-        for label, cat in [("CLOTHING",    "Apparel"),
-                            ("SHOES",       "Footwear"),
-                            ("ACCESSORIES", "Accessory")]:
+        home = self._nav_label(left, "HOME", self._show_homepage)
+        home.pack(side=tk.LEFT, padx=12)
+
+        for label, cat in [("TOPS",         "Apparel"),
+                            ("PANTS",        "Pants"),
+                            ("SHOES",        "Footwear"),
+                            ("ACCESSORIES",  "Accessory")]:
             lbl = self._nav_label(left, label,
                                   lambda c=cat: self._show_catalog_panel(c))
             lbl.pack(side=tk.LEFT, padx=12)
@@ -95,7 +99,7 @@ class MainWindow:
                 lambda e: self._show_catalog_panel(self._current_category))
 
     def _build_admin_header(self) -> None:
-        tk.Label(self._header, text="SHOPAPP  —  ADMIN",
+        tk.Label(self._header, text="ARCHIVE-STORE  —  ADMIN",
                  font=("Arial", 13, "bold"), bg=BG, fg=FG
                  ).pack(side=tk.LEFT, padx=24)
         lout = self._nav_label(self._header, "LOGOUT", self._logout)
@@ -111,7 +115,7 @@ class MainWindow:
         card = tk.Frame(self._content, bg=BG, padx=48, pady=48)
         card.place(relx=0.5, rely=0.5, anchor="center")
 
-        tk.Label(card, text="SHOPAPP", font=("Arial", 22, "bold"),
+        tk.Label(card, text="ARCHIVE-STORE", font=("Arial", 22, "bold"),
                  bg=BG, fg=FG).pack(pady=(0, 36))
 
         entries = {}

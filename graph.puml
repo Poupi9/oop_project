@@ -1,4 +1,4 @@
-@startuml
+@startuml graph.puml
 skinparam classAttributeIconSize 0
 
 ' --- ABSTRACT CLASS ---
@@ -11,7 +11,9 @@ abstract class Product {
     + getName(): String
     + getPrice(): double
     + getStock(): int
-    + setStock(int newStock): void
+    + setStock(newStock: int): void
+    + setPrice(newPrice: double): void
+    + setName(newName: String): void
     + {abstract} calculateShipping(): double
 }
 
@@ -42,11 +44,13 @@ Product <|-- Apparel
 Product <|-- Accessory
 Product <|-- Footwear
 
-' --- USER HIERARCHY ---
-class User {
+' --- USER HIERARCHY (abstract base) ---
+abstract class User {
     - name: String
     - email: String
-    + login(): boolean
+    - passwordHash: String
+    + login(password: String): boolean
+    + logout(): void
     + getName(): String
     + getEmail(): String
 }
@@ -55,12 +59,14 @@ class Customer {
     - favoriteList: List<Product>
     - orderHistory: List<Order>
     + addToFavorites(p: Product): void
+    + removeFromFavorites(p: Product): void
     + viewOrderHistory(): void
 }
 
 class Admin {
     + addProduct(p: Product): void
     + removeProduct(p: Product): void
+    + updateProduct(p: Product): void
     + viewLogs(): void
 }
 
@@ -74,6 +80,7 @@ class Basket {
     + removeProduct(p: Product): void
     + calculateTotal(): double
     + checkout(): Order
+    + clear(): void
 }
 
 class Order {
@@ -81,7 +88,23 @@ class Order {
     - orderDate: Date
     - purchasedItems: List<Product>
     - totalAmount: double
+    - status: String
+    - payment: Payment
     + getOrderDetails(): String
+    + getStatus(): String
+    + setStatus(status: String): void
+}
+
+' --- PAYMENT ---
+class Payment {
+    - paymentId: String
+    - amount: double
+    - method: String
+    - status: String
+    + processPayment(): boolean
+    + getStatus(): String
+    + getMethod(): String
+    + getAmount(): double
 }
 
 ' --- CONTROLLER ---
@@ -91,14 +114,89 @@ class StoreManager {
     + loadData(): void
     + saveData(): void
     + processOrder(o: Order): void
+    + getProductCatalog(): List<Product>
+    + getUserList(): List<User>
+}
+
+' --- FILE I/O & LOGGING ---
+class Logger {
+    - logFilePath: String
+    + log(message: String): void
+    + loadLogs(): List<String>
+    + clearLogs(): void
+}
+
+' --- CUSTOM EXCEPTIONS ---
+class OutOfStockException {
+    - productName: String
+    + OutOfStockException(productName: String)
+    + getMessage(): String
+}
+
+class InvalidOrderException {
+    - reason: String
+    + InvalidOrderException(reason: String)
+    + getMessage(): String
+}
+
+class AuthenticationException {
+    - reason: String
+    + AuthenticationException(reason: String)
+    + getMessage(): String
+}
+
+OutOfStockException --|> Exception
+InvalidOrderException --|> Exception
+AuthenticationException --|> Exception
+
+' --- GUI LAYER ---
+class MainWindow {
+    - currentUser: User
+    + showLoginPanel(): void
+    + showCatalogPanel(): void
+    + showOrderPanel(): void
+    + showAdminPanel(): void
+    + logout(): void
+}
+
+class ProductCatalogPanel {
+    - productList: List<Product>
+    + displayProducts(): void
+    + searchProduct(keyword: String): void
+    + addToBasket(p: Product): void
+    + refreshCatalog(): void
+}
+
+class OrderPanel {
+    - basket: Basket
+    - orderHistory: List<Order>
+    + displayBasket(): void
+    + confirmOrder(): void
+    + displayOrderHistory(): void
+}
+
+class AdminPanel {
+    + displayProductForm(): void
+    + displayUserList(): void
+    + displayLogs(): void
 }
 
 ' --- RELATIONSHIPS ---
-Customer "1" *-- "1" Basket : possède >
-Customer "1" *-- "0..*" Order : passe >
-Basket "1" o-- "0..*" Product : contient >
-Order "1" o-- "1..*" Product : inclut >
-StoreManager "1" o-- "0..*" Product : gère >
-StoreManager "1" o-- "0..*" User : administre >
+Customer "1" *-- "1" Basket          : possède >
+Customer "1" *-- "0..*" Order        : passe >
+Basket "1" o-- "0..*" Product        : contient >
+Order "1" o-- "1..*" Product         : inclut >
+Order "1" *-- "1" Payment            : payé par >
+StoreManager "1" o-- "0..*" Product  : gère >
+StoreManager "1" o-- "0..*" User     : administre >
+Admin "1" --> "1" StoreManager       : modifie >
+StoreManager "1" --> "1" Logger      : utilise >
+
+MainWindow "1" --> "1" StoreManager       : utilise >
+MainWindow "1" --> "1" ProductCatalogPanel : affiche >
+MainWindow "1" --> "1" OrderPanel          : affiche >
+MainWindow "1" --> "1" AdminPanel          : affiche >
+AdminPanel "1" --> "1" StoreManager       : délègue >
+OrderPanel "1" --> "1" Basket             : gère >
 
 @enduml

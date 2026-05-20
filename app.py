@@ -1,6 +1,6 @@
 import json
 import os
-from user import hash_password
+from models.user import hash_password
 
 DATA_DIR      = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 PRODUCTS_FILE = os.path.join(DATA_DIR, "products.json")
@@ -24,9 +24,9 @@ def seed_if_empty() -> None:
 
     if not os.path.exists(USERS_FILE):
         users = [
-            {"type": "Customer", "name": "alice",  "password_hash": hash_password("alice123")},
-            {"type": "Customer", "name": "bob",    "password_hash": hash_password("bob123")},
-            {"type": "Admin",    "name": "admin",  "password_hash": hash_password("admin123")},
+            {"type": "Customer", "name": "alice", "password_hash": hash_password("alice123")},
+            {"type": "Customer", "name": "bob",   "password_hash": hash_password("bob123")},
+            {"type": "Admin",    "name": "admin", "password_hash": hash_password("admin123")},
         ]
         with open(USERS_FILE, "w") as f:
             json.dump(users, f, indent=2)
@@ -34,5 +34,5 @@ def seed_if_empty() -> None:
 
 if __name__ == "__main__":
     seed_if_empty()
-    from main_window import MainWindow
+    from gui.main_window import MainWindow
     MainWindow().run()

@@ -1,13 +1,13 @@
 import tkinter as tk
-from store_manager import StoreManager
-from basket import Basket
-from user import Admin
-from exceptions import AuthenticationException
+from services.store_manager import StoreManager
+from models.basket import Basket
+from models.user import Admin
+from models.exceptions import AuthenticationException
 
-BG      = "white"
-FG      = "#1A1A1A"
-MUTED   = "#777777"
-BORDER  = "#E8E8E8"
+BG    = "white"
+FG    = "#1A1A1A"
+MUTED = "#777777"
+BORDER = "#E8E8E8"
 
 
 class MainWindow:
@@ -77,14 +77,13 @@ class MainWindow:
         lout = self._nav_label(right, "LOGOUT", self._logout)
         lout.pack(side=tk.RIGHT, padx=(14, 0))
 
-        count     = len(self._basket.get_items()) if self._basket else 0
-        cart_text = f"CART  ({count})"
-        cart_lbl  = tk.Label(right, text=cart_text, font=("Arial", 9, "bold"),
-                             bg=BG, fg=FG, cursor="hand2")
+        count    = len(self._basket.get_items()) if self._basket else 0
+        cart_lbl = tk.Label(right, text=f"CART  ({count})",
+                            font=("Arial", 9, "bold"), bg=BG, fg=FG, cursor="hand2")
         cart_lbl.pack(side=tk.RIGHT, padx=14)
         cart_lbl.bind("<Button-1>", lambda e: self._show_order_panel())
 
-        sf = tk.Frame(right, bg="#F3F3F3", padx=10, pady=0)
+        sf = tk.Frame(right, bg="#F3F3F3", padx=10)
         sf.pack(side=tk.RIGHT, padx=14)
         tk.Label(sf, text="⌕", font=("Arial", 12),
                  bg="#F3F3F3", fg=MUTED).pack(side=tk.LEFT)
@@ -92,7 +91,8 @@ class MainWindow:
                       font=("Arial", 9), relief="flat", bg="#F3F3F3",
                       fg=FG, insertbackground=FG)
         se.pack(side=tk.LEFT, ipady=5)
-        se.bind("<Return>", lambda e: self._show_catalog_panel(self._current_category))
+        se.bind("<Return>",
+                lambda e: self._show_catalog_panel(self._current_category))
 
     def _build_admin_header(self) -> None:
         tk.Label(self._header, text="SHOPAPP  —  ADMIN",
@@ -117,8 +117,8 @@ class MainWindow:
         entries = {}
         for label, key, hidden in [("Username", "name", False),
                                     ("Password", "pass", True)]:
-            tk.Label(card, text=label, bg=BG, font=("Arial", 9),
-                     fg=MUTED).pack(anchor="w")
+            tk.Label(card, text=label, bg=BG,
+                     font=("Arial", 9), fg=MUTED).pack(anchor="w")
             e = tk.Entry(card, width=30, font=("Arial", 11), relief="flat",
                          bg="#F5F5F5", fg=FG, insertbackground=FG)
             if hidden:
@@ -151,13 +151,13 @@ class MainWindow:
                   ).pack(pady=(10, 0))
 
     def _show_homepage(self) -> None:
-        from homepage_panel import HomepagePanel
+        from gui.homepage_panel import HomepagePanel
         self._clear()
         self._build_customer_header()
         HomepagePanel(self._content).pack(fill=tk.BOTH, expand=True)
 
     def _show_catalog_panel(self, category: str = None) -> None:
-        from product_catalog_panel import ProductCatalogPanel
+        from gui.product_catalog_panel import ProductCatalogPanel
         self._current_category = category
         self._clear()
         self._build_customer_header()
@@ -167,7 +167,7 @@ class MainWindow:
         ).pack(fill=tk.BOTH, expand=True)
 
     def _show_order_panel(self) -> None:
-        from order_panel import OrderPanel
+        from gui.order_panel import OrderPanel
         self._clear()
         self._build_customer_header()
         OrderPanel(
@@ -176,7 +176,7 @@ class MainWindow:
         ).pack(fill=tk.BOTH, expand=True)
 
     def _show_admin_panel(self) -> None:
-        from admin_panel import AdminPanel
+        from gui.admin_panel import AdminPanel
         self._clear()
         self._build_admin_header()
         AdminPanel(self._content, self._store).pack(fill=tk.BOTH, expand=True)

@@ -1,44 +1,8 @@
-[2026-05-20 18:49:45] Data loaded from disk.
-[2026-05-20 18:49:45] Order[9701f139] confirmed — items: [Hoodie, Loafers] — total: $109.98
-[2026-05-20 18:49:45] Data saved to disk.
-[2026-05-20 18:49:45] Data loaded from disk.
-[2026-05-20 18:49:45] Data loaded from disk.
-[2026-05-20 18:49:45] User 'Alice' logged in.
-[2026-05-20 18:49:45] User 'Bob' logged in.
-[2026-05-20 18:49:45] Failed login for 'Alice' — wrong password.
-[2026-05-20 18:49:45] Failed login — user 'Charlie' not found.
-[2026-05-20 18:49:45] User 'Carol' registered as customer.
-[2026-05-20 18:49:45] User 'Carol' logged in.
-[2026-05-20 18:49:45] Data saved to disk.
-[2026-05-20 19:01:33] Data loaded from disk.
-[2026-05-20 19:01:33] User 'alice' logged in.
-[2026-05-20 19:01:33] User 'admin' logged in.
-[2026-05-20 19:01:33] Order[3928b8c8] confirmed — items: [T-Shirt, Sneakers] — total: $79.98
-[2026-05-20 19:01:33] Data saved to disk.
-[2026-05-20 19:01:33] Data loaded from disk.
-[2026-05-20 19:01:33] Admin added product 'Jacket'.
-[2026-05-20 19:01:33] Data saved to disk.
-[2026-05-20 19:01:33] Data loaded from disk.
-[2026-05-20 19:04:11] Data loaded from disk.
-[2026-05-20 19:04:43] User 'alice' logged in.
-[2026-05-20 19:04:55] Data saved to disk.
-[2026-05-20 19:05:01] User 'alice' logged in.
-[2026-05-20 19:05:31] Data saved to disk.
-[2026-05-20 19:05:38] User 'admin' logged in.
-[2026-05-20 19:07:07] Data saved to disk.
-[2026-05-20 19:07:15] User 'alice' logged in.
-[2026-05-20 19:07:48] Data saved to disk.
-[2026-05-20 19:08:32] User 'alice' logged in.
-[2026-05-20 19:09:58] Data saved to disk.
-[2026-05-20 19:10:06] Failed login for 'admin' — wrong password.
-[2026-05-20 19:10:11] User 'admin' logged in.
-[2026-05-20 19:16:09] Data loaded from disk.
-[2026-05-20 19:17:00] User 'alice' logged in.
-[2026-05-20 19:29:44] Data loaded from disk.
-[2026-05-20 19:30:01] User 'alice' logged in.
-[2026-05-20 19:31:14] Order[e44d9187] confirmed — items: [Watch] — total: $89.99
-[2026-05-20 19:31:14] Data saved to disk.
-[2026-05-20 19:33:56] Data saved to disk.
-[2026-05-20 19:34:04] User 'admin' logged in.
-[2026-05-20 19:34:10] Data saved to disk.
-[2026-05-20 19:34:19] User 'alice' logged in.
+[2026-05-20 19:52:32] Data loaded from disk.
+[2026-05-20 19:52:32] Order[a03ee708] confirmed — items: [Hoodie, Loafers] — total: $109.98
+[2026-05-20 19:52:32] Data saved to disk.
+[2026-05-20 19:52:32] Data loaded from disk.
+[2026-05-20 19:52:32] User 'Alice' logged in.
+[2026-05-20 19:52:32] User 'Bob' logged in.
+[2026-05-20 19:52:32] Failed login for 'Alice' — wrong password.
+[2026-05-20 19:52:32] Failed login — user 'Ghost' not found.

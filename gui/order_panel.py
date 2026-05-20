@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
-from store_manager import StoreManager
-from basket import Basket
-from exceptions import InvalidOrderException, OutOfStockException
+from services.store_manager import StoreManager
+from models.basket import Basket
+from models.exceptions import InvalidOrderException, OutOfStockException
 
 BG     = "white"
 FG     = "#1A1A1A"
@@ -22,7 +22,6 @@ class OrderPanel(tk.Frame):
         self._build_ui()
 
     def _build_ui(self) -> None:
-        # ── Two-column layout ─────────────────────────────────────
         body = tk.Frame(self, bg=BG)
         body.pack(fill=tk.BOTH, expand=True, padx=48, pady=28)
 
@@ -34,11 +33,9 @@ class OrderPanel(tk.Frame):
                  bg=BG, fg=FG).pack(anchor="w", pady=(0, 14))
         tk.Frame(left, bg=BORDER, height=1).pack(fill=tk.X, pady=(0, 10))
 
-        # Scrollable items container
         self._items_frame = tk.Frame(left, bg=BG)
         self._items_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Continue shopping link
         cont = tk.Label(left, text="← Continue Shopping",
                         font=("Arial", 9), bg=BG, fg=MUTED, cursor="hand2")
         cont.pack(anchor="w", pady=(18, 0))
@@ -70,7 +67,7 @@ class OrderPanel(tk.Frame):
                                  fg="#27ae60", wraplength=260, justify="left")
         self._msg_lbl.pack(pady=10, anchor="w")
 
-        # ── Order history ─────────────────────────────────────────
+        # Order history
         hist = tk.Frame(self, bg=BG)
         hist.pack(fill=tk.X, padx=48, pady=(0, 28))
 
@@ -87,8 +84,6 @@ class OrderPanel(tk.Frame):
 
         self._refresh_items()
 
-    # ------------------------------------------------------------------ #
-
     def _refresh_items(self) -> None:
         for w in self._items_frame.winfo_children():
             w.destroy()
@@ -101,31 +96,26 @@ class OrderPanel(tk.Frame):
             for item in items:
                 self._make_row(item)
 
-        total = self._basket.calculate_total()
-        self._total_lbl.config(text=f"Total:  ${total:.2f}")
+        self._total_lbl.config(text=f"Total:  ${self._basket.calculate_total():.2f}")
 
     def _make_row(self, product) -> None:
         row = tk.Frame(self._items_frame, bg=BG)
         row.pack(fill=tk.X, pady=8)
 
-        # Image placeholder
         img = tk.Canvas(row, width=76, height=76,
                         bg=IMG_BG, highlightthickness=0)
         img.pack(side=tk.LEFT, padx=(0, 18))
         img.create_text(38, 38, text="[ ]", font=("Arial", 9), fill="#C0C0C0")
 
-        # Info
         info = tk.Frame(row, bg=BG)
         info.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        tk.Label(info, text=product.get_name(), font=("Arial", 10),
+                 bg=BG, fg=FG, anchor="w").pack(fill=tk.X)
+        tk.Label(info, text=f"${product.get_price():.2f}", font=("Arial", 10),
+                 bg=BG, fg=MUTED, anchor="w").pack(fill=tk.X)
+        tk.Label(info, text="Qty: 1", font=("Arial", 9),
+                 bg=BG, fg="#BBBBBB", anchor="w").pack(fill=tk.X)
 
-        tk.Label(info, text=product.get_name(),
-                 font=("Arial", 10), bg=BG, fg=FG, anchor="w").pack(fill=tk.X)
-        tk.Label(info, text=f"${product.get_price():.2f}",
-                 font=("Arial", 10), bg=BG, fg=MUTED, anchor="w").pack(fill=tk.X)
-        tk.Label(info, text="Qty: 1",
-                 font=("Arial", 9), bg=BG, fg="#BBBBBB", anchor="w").pack(fill=tk.X)
-
-        # Remove button
         rm = tk.Label(row, text="✕", font=("Arial", 13),
                       bg=BG, fg="#CCCCCC", cursor="hand2")
         rm.pack(side=tk.RIGHT, padx=(12, 0))

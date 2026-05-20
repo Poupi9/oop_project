@@ -1,19 +1,18 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from store_manager import StoreManager
-from basket import Basket
-from exceptions import OutOfStockException
+from services.store_manager import StoreManager
+from models.basket import Basket
+from models.exceptions import OutOfStockException
 
-BG       = "white"
-CARD_BG  = "white"
-HOVER_BG = "#F7F7F7"
-IMG_BG   = "#F0F0F0"
-FG       = "#1A1A1A"
-MUTED    = "#777777"
-BORDER   = "#E8E8E8"
-
-CARD_W   = 210   # card pixel width
-CARD_SLOT = 250  # slot width (card + gap)
+BG        = "white"
+CARD_BG   = "white"
+HOVER_BG  = "#F7F7F7"
+IMG_BG    = "#F0F0F0"
+FG        = "#1A1A1A"
+MUTED     = "#777777"
+BORDER    = "#E8E8E8"
+CARD_W    = 210
+CARD_SLOT = 250
 
 
 class ProductCatalogPanel(tk.Frame):
@@ -25,9 +24,9 @@ class ProductCatalogPanel(tk.Frame):
         self._category   = category
         self._search_var = search_var
         self._cards: list[tk.Frame] = []
-        self._canvas     = None
-        self._inner      = None
-        self._win        = None
+        self._canvas = None
+        self._inner  = None
+        self._win    = None
         self._build_ui()
         search_var.trace_add("write", lambda *_: self._refresh())
 
@@ -52,7 +51,6 @@ class ProductCatalogPanel(tk.Frame):
         self._canvas.bind("<Configure>", self._on_resize)
         self._canvas.configure(yscrollcommand=sb.set)
 
-        # Mousewheel — bind only while cursor is inside the panel
         self._canvas.bind("<Enter>",
             lambda e: self._canvas.bind_all("<MouseWheel>", self._on_scroll))
         self._canvas.bind("<Leave>",
@@ -105,14 +103,12 @@ class ProductCatalogPanel(tk.Frame):
         card = tk.Frame(self._inner, bg=CARD_BG, width=CARD_W, cursor="hand2")
         card.grid_propagate(False)
 
-        # Image placeholder
         img = tk.Canvas(card, width=CARD_W, height=220,
                         bg=IMG_BG, highlightthickness=0)
         img.pack()
         img.create_text(CARD_W // 2, 110, text="[ Photo ]",
                         font=("Arial", 10), fill="#C0C0C0")
 
-        # Info row
         info = tk.Frame(card, bg=CARD_BG, padx=10, pady=8)
         info.pack(fill=tk.X)
 
@@ -125,7 +121,6 @@ class ProductCatalogPanel(tk.Frame):
             tk.Label(info, text="Out of stock", font=("Arial", 9),
                      bg=CARD_BG, fg="#CC3333", anchor="w").pack(fill=tk.X)
 
-        # Add button
         add_btn = tk.Button(
             card, text="ADD TO CART",
             font=("Arial", 9), relief="flat", cursor="hand2",
@@ -134,16 +129,14 @@ class ProductCatalogPanel(tk.Frame):
             command=lambda p=product: self._add(p, card)
         )
         add_btn.pack(fill=tk.X, padx=10, pady=(4, 10))
-
         if product.get_stock() == 0:
             add_btn.config(state=tk.DISABLED, bg="#CCCCCC")
 
-        # Hover effect on card frame + image + info
-        all_widgets = [card, img, info] + list(info.winfo_children())
-        for w in all_widgets:
-            w.bind("<Enter>", lambda e, ws=all_widgets, btn=add_btn:
+        all_w = [card, img, info] + list(info.winfo_children())
+        for w in all_w:
+            w.bind("<Enter>", lambda e, ws=all_w, btn=add_btn:
                    [x.config(bg=HOVER_BG) for x in ws if x is not btn])
-            w.bind("<Leave>", lambda e, ws=all_widgets, btn=add_btn:
+            w.bind("<Leave>", lambda e, ws=all_w, btn=add_btn:
                    [x.config(bg=CARD_BG) for x in ws if x is not btn])
 
         return card
@@ -151,7 +144,6 @@ class ProductCatalogPanel(tk.Frame):
     def _add(self, product, card: tk.Frame) -> None:
         try:
             self._basket.add_product(product)
-            # brief green flash on the card
             widgets = [card] + list(card.winfo_children())
             for w in widgets:
                 try:

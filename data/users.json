@@ -1,12 +1,12 @@
 [
   {
     "type": "Customer",
-    "name": "alice",
+    "name": "Alice",
     "password_hash": "4e40e8ffe0ee32fa53e139147ed559229a5930f89c2204706fc174beb36210b3"
   },
   {
     "type": "Admin",
-    "name": "admin",
+    "name": "Bob",
     "password_hash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9"
   }
 ]

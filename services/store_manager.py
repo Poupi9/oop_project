@@ -1,12 +1,13 @@
 import json
 import os
-from product import Product, Apparel, Accessory, Footwear
-from user import User, Customer, Admin, hash_password
-from order import Order
-from logger import Logger
-from exceptions import AuthenticationException
+from models.product import Product, Apparel, Accessory, Footwear
+from models.user import User, Customer, Admin, hash_password
+from models.order import Order
+from models.exceptions import AuthenticationException
+from services.logger import Logger
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+# data/ lives at the project root — two levels up from services/
+DATA_DIR      = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
 PRODUCTS_FILE = os.path.join(DATA_DIR, 'products.json')
 USERS_FILE    = os.path.join(DATA_DIR, 'users.json')
 LOGS_FILE     = os.path.join(DATA_DIR, 'logs.txt')

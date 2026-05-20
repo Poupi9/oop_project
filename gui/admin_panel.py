@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, simpledialog
-from store_manager import StoreManager
-from product import Apparel, Accessory, Footwear
+from services.store_manager import StoreManager
+from models.product import Apparel, Accessory, Footwear
 
 
 class AdminPanel(tk.Frame):
@@ -32,7 +32,8 @@ class AdminPanel(tk.Frame):
     def _build_products_tab(self, parent: tk.Frame) -> None:
         cols = ("ID", "Name", "Type", "Price", "Stock", "Details")
         self._prod_tree = ttk.Treeview(parent, columns=cols, show="headings", height=18)
-        widths = {"ID": 70, "Name": 160, "Type": 100, "Price": 80, "Stock": 65, "Details": 260}
+        widths = {"ID": 70, "Name": 160, "Type": 100,
+                  "Price": 80, "Stock": 65, "Details": 260}
         for col in cols:
             self._prod_tree.heading(col, text=col)
             self._prod_tree.column(col, width=widths[col], anchor="w")
@@ -96,18 +97,15 @@ class AdminPanel(tk.Frame):
                         if p.get_id() == pid), None)
         if not product:
             return
-
         new_name  = simpledialog.askstring(
             "Update", "Name:", initialvalue=product.get_name(), parent=self)
         new_price = simpledialog.askfloat(
             "Update", "Price:", initialvalue=product.get_price(), parent=self)
         new_stock = simpledialog.askinteger(
             "Update", "Stock:", initialvalue=product.get_stock(), parent=self)
-
         if new_name  is not None: product.set_name(new_name)
         if new_price is not None: product.set_price(new_price)
         if new_stock is not None: product.set_stock(new_stock)
-
         self._store.save_data()
         self._refresh_products()
         self._prod_status.config(text="Product updated.", fg="#2980b9")
@@ -136,7 +134,6 @@ class AdminPanel(tk.Frame):
     def _build_logs_tab(self, parent: tk.Frame) -> None:
         bar = tk.Frame(parent, bg="#f5f5f5")
         bar.pack(fill=tk.X, padx=8, pady=8)
-
         tk.Button(bar, text="Refresh", command=self._refresh_logs,
                   bg="#2980b9", fg="white", relief="flat",
                   font=("Arial", 10), cursor="hand2", padx=12).pack(side=tk.LEFT)
@@ -153,7 +150,6 @@ class AdminPanel(tk.Frame):
         ysb = ttk.Scrollbar(text_frame, orient=tk.VERTICAL,   command=self._log_text.yview)
         xsb = ttk.Scrollbar(text_frame, orient=tk.HORIZONTAL, command=self._log_text.xview)
         self._log_text.configure(yscrollcommand=ysb.set, xscrollcommand=xsb.set)
-
         self._log_text.grid(row=0, column=0, sticky="nsew")
         ysb.grid(row=0, column=1, sticky="ns")
         xsb.grid(row=1, column=0, sticky="ew")
@@ -176,10 +172,6 @@ class AdminPanel(tk.Frame):
             self._refresh_logs()
 
 
-# ------------------------------------------------------------------ #
-# Modal dialog for adding a new product                               #
-# ------------------------------------------------------------------ #
-
 class _AddProductDialog(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
@@ -195,7 +187,6 @@ class _AddProductDialog(tk.Toplevel):
 
     def _build(self) -> None:
         pad = {"padx": 14, "pady": 5}
-
         tk.Label(self, text="Type:").grid(row=0, column=0, sticky="w", **pad)
         self._type_var = tk.StringVar(value="Apparel")
         cb = ttk.Combobox(self, textvariable=self._type_var, state="readonly",
@@ -203,12 +194,10 @@ class _AddProductDialog(tk.Toplevel):
         cb.grid(row=0, column=1, **pad)
         cb.bind("<<ComboboxSelected>>", self._on_type_change)
 
-        labels = [("ID:",    "id"),
-                  ("Name:",  "name"),
-                  ("Price:", "price"),
-                  ("Stock:", "stock")]
         self._entries: dict[str, tk.Entry] = {}
-        for i, (lbl, key) in enumerate(labels, start=1):
+        for i, (lbl, key) in enumerate(
+                [("ID:", "id"), ("Name:", "name"), ("Price:", "price"), ("Stock:", "stock")],
+                start=1):
             tk.Label(self, text=lbl).grid(row=i, column=0, sticky="w", **pad)
             e = tk.Entry(self, width=22)
             e.grid(row=i, column=1, **pad)
@@ -225,12 +214,8 @@ class _AddProductDialog(tk.Toplevel):
 
     def _on_type_change(self, _=None) -> None:
         t = self._type_var.get()
-        if t == "Apparel":
-            self._extra_lbl.config(text="Size:")
-            self._extra_lbl.grid()
-            self._extra_entry.grid()
-        elif t == "Footwear":
-            self._extra_lbl.config(text="Shoe size:")
+        if t in ("Apparel", "Footwear"):
+            self._extra_lbl.config(text="Size:" if t == "Apparel" else "Shoe size:")
             self._extra_lbl.grid()
             self._extra_entry.grid()
         else:

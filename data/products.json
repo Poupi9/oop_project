@@ -1,33 +1,25 @@
 [
   {
     "type": "Apparel",
-    "product_id": "P001",
-    "name": "T-Shirt",
-    "price": 19.99,
-    "stock": 9,
-    "size": "M"
+    "product_id": "P010",
+    "name": "Hoodie",
+    "price": 39.99,
+    "stock": 4,
+    "size": "L"
   },
   {
     "type": "Accessory",
-    "product_id": "P003",
-    "name": "Watch",
-    "price": 89.99,
-    "stock": 3
+    "product_id": "P011",
+    "name": "Sunglasses",
+    "price": 29.99,
+    "stock": 8
   },
   {
     "type": "Footwear",
-    "product_id": "P005",
-    "name": "Sneakers",
-    "price": 59.99,
-    "stock": 4,
-    "shoe_size": 42.0
-  },
-  {
-    "type": "Apparel",
-    "product_id": "P099",
-    "name": "Jacket",
-    "price": 49.99,
-    "stock": 3,
-    "size": "L"
+    "product_id": "P012",
+    "name": "Loafers",
+    "price": 69.99,
+    "stock": 2,
+    "shoe_size": 43.0
   }
 ]

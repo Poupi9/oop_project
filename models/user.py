@@ -1,6 +1,6 @@
 import hashlib
 from abc import ABC, abstractmethod
-from product import Product
+from models.product import Product
 
 
 def hash_password(plain: str) -> str:
@@ -56,10 +56,8 @@ class Admin(User):
         if p in catalog:
             catalog.remove(p)
 
-    def update_product(self, p: Product, name: str = None, price: float = None, stock: int = None) -> None:
-        if name is not None:
-            p.set_name(name)
-        if price is not None:
-            p.set_price(price)
-        if stock is not None:
-            p.set_stock(stock)
+    def update_product(self, p: Product, name: str = None,
+                       price: float = None, stock: int = None) -> None:
+        if name  is not None: p.set_name(name)
+        if price is not None: p.set_price(price)
+        if stock is not None: p.set_stock(stock)

@@ -1,7 +1,7 @@
-from product import Product
-from payment import Payment
-from order import Order
-from exceptions import OutOfStockException, InvalidOrderException
+from models.product import Product
+from models.payment import Payment
+from models.order import Order
+from models.exceptions import OutOfStockException, InvalidOrderException
 
 
 class Basket:
@@ -30,16 +30,14 @@ class Basket:
         if not self.__items:
             raise InvalidOrderException("basket is empty")
 
-        # verify stock is still available for every item
         for item in self.__items:
             if item.get_stock() <= 0:
                 raise OutOfStockException(item.get_name())
 
-        # deduct stock
         for item in self.__items:
             item.set_stock(item.get_stock() - 1)
 
-        total = self.calculate_total()
+        total   = self.calculate_total()
         payment = Payment(total)
         payment.process_payment()
 

@@ -1,17 +1,17 @@
 import uuid
 from datetime import datetime
-from product import Product
-from payment import Payment
+from models.product import Product
+from models.payment import Payment
 
 
 class Order:
     def __init__(self, purchased_items: list[Product], total_amount: float, payment: Payment):
-        self.__order_id = str(uuid.uuid4())[:8]
-        self.__order_date = datetime.now()
+        self.__order_id        = str(uuid.uuid4())[:8]
+        self.__order_date      = datetime.now()
         self.__purchased_items = list(purchased_items)
-        self.__total_amount = total_amount
-        self.__status = "confirmed"
-        self.__payment = payment
+        self.__total_amount    = total_amount
+        self.__status          = "confirmed"
+        self.__payment         = payment
 
     def get_order_id(self) -> str:
         return self.__order_id

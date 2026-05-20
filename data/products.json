@@ -1,0 +1,33 @@
+[
+  {
+    "type": "Apparel",
+    "product_id": "P001",
+    "name": "T-Shirt",
+    "price": 19.99,
+    "stock": 9,
+    "size": "M"
+  },
+  {
+    "type": "Accessory",
+    "product_id": "P003",
+    "name": "Watch",
+    "price": 89.99,
+    "stock": 4
+  },
+  {
+    "type": "Footwear",
+    "product_id": "P005",
+    "name": "Sneakers",
+    "price": 59.99,
+    "stock": 4,
+    "shoe_size": 42.0
+  },
+  {
+    "type": "Apparel",
+    "product_id": "P099",
+    "name": "Jacket",
+    "price": 49.99,
+    "stock": 3,
+    "size": "L"
+  }
+]

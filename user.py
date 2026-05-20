@@ -1,5 +1,10 @@
+import hashlib
 from abc import ABC, abstractmethod
 from product import Product
+
+
+def hash_password(plain: str) -> str:
+    return hashlib.sha256(plain.encode()).hexdigest()
 
 
 class User(ABC):
@@ -8,7 +13,7 @@ class User(ABC):
         self.__password_hash = password_hash
 
     def login(self, password: str) -> bool:
-        return self.__password_hash == password
+        return self.__password_hash == hash_password(password)
 
     def logout(self) -> None:
         pass

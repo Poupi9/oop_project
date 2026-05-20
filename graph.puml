@@ -1,0 +1,104 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' --- ABSTRACT CLASS ---
+abstract class Product {
+    - productId: String
+    - name: String
+    - price: double
+    - stock: int
+    + getId(): String
+    + getName(): String
+    + getPrice(): double
+    + getStock(): int
+    + setStock(int newStock): void
+    + {abstract} calculateShipping(): double
+}
+
+' --- PRODUCT SUBCLASSES ---
+class Apparel {
+    - size: String
+    - color: String
+    + getSize(): String
+    + getColor(): String
+    + calculateShipping(): double
+}
+
+class Accessory {
+    - material: String
+    - weight: double
+    + getMaterial(): String
+    + getWeight(): double
+    + calculateShipping(): double
+}
+
+class Footwear {
+    - shoeSize: double
+    + getShoeSize(): double
+    + calculateShipping(): double
+}
+
+Product <|-- Apparel
+Product <|-- Accessory
+Product <|-- Footwear
+
+' --- USER HIERARCHY ---
+class User {
+    - name: String
+    - email: String
+    + login(): boolean
+    + getName(): String
+    + getEmail(): String
+}
+
+class Customer {
+    - favoriteList: List<Product>
+    - orderHistory: List<Order>
+    + addToFavorites(p: Product): void
+    + viewOrderHistory(): void
+}
+
+class Admin {
+    + addProduct(p: Product): void
+    + removeProduct(p: Product): void
+    + viewLogs(): void
+}
+
+User <|-- Customer
+User <|-- Admin
+
+' --- CART AND ORDER ---
+class Basket {
+    - items: List<Product>
+    + addProduct(p: Product): void
+    + removeProduct(p: Product): void
+    + calculateTotal(): double
+    + checkout(): Order
+}
+
+class Order {
+    - orderId: String
+    - orderDate: Date
+    - purchasedItems: List<Product>
+    - totalAmount: double
+    + getOrderDetails(): String
+}
+
+' --- CONTROLLER ---
+class StoreManager {
+    - productCatalog: List<Product>
+    - userList: List<User>
+    + loadData(): void
+    + saveData(): void
+    + processOrder(o: Order): void
+}
+
+' --- RELATIONSHIPS ---
+Customer "1" *-- "1" Basket : possède >
+Customer "1" *-- "0..*" Order : passe >
+Basket "1" o-- "0..*" Product : contient >
+Order "1" o-- "1..*" Product : inclut >
+StoreManager "1" o-- "0..*" Product : gère >
+StoreManager "1" o-- "0..*" User : administre >
+
+@enduml

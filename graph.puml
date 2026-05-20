@@ -14,24 +14,20 @@ abstract class Product {
     + setStock(newStock: int): void
     + setPrice(newPrice: double): void
     + setName(newName: String): void
-    + {abstract} calculateShipping(): double
 }
 
 ' --- PRODUCT SUBCLASSES ---
 class Apparel {
     - size: String
     + getSize(): String
-    + calculateShipping(): double
 }
 
 class Accessory {
-    + calculateShipping(): double
 }
 
 class Footwear {
     - shoeSize: double
     + getShoeSize(): double
-    + calculateShipping(): double
 }
 
 Product <|-- Apparel

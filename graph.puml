@@ -20,17 +20,11 @@ abstract class Product {
 ' --- PRODUCT SUBCLASSES ---
 class Apparel {
     - size: String
-    - color: String
     + getSize(): String
-    + getColor(): String
     + calculateShipping(): double
 }
 
 class Accessory {
-    - material: String
-    - weight: double
-    + getMaterial(): String
-    + getWeight(): double
     + calculateShipping(): double
 }
 
@@ -47,20 +41,16 @@ Product <|-- Footwear
 ' --- USER HIERARCHY (abstract base) ---
 abstract class User {
     - name: String
-    - email: String
     - passwordHash: String
     + login(password: String): boolean
     + logout(): void
     + getName(): String
-    + getEmail(): String
 }
 
 class Customer {
     - favoriteList: List<Product>
-    - orderHistory: List<Order>
     + addToFavorites(p: Product): void
     + removeFromFavorites(p: Product): void
-    + viewOrderHistory(): void
 }
 
 class Admin {
@@ -99,11 +89,9 @@ class Order {
 class Payment {
     - paymentId: String
     - amount: double
-    - method: String
     - status: String
     + processPayment(): boolean
     + getStatus(): String
-    + getMethod(): String
     + getAmount(): double
 }
 

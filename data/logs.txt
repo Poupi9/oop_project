@@ -32,3 +32,13 @@
 [2026-05-20 19:09:58] Data saved to disk.
 [2026-05-20 19:10:06] Failed login for 'admin' — wrong password.
 [2026-05-20 19:10:11] User 'admin' logged in.
+[2026-05-20 19:16:09] Data loaded from disk.
+[2026-05-20 19:17:00] User 'alice' logged in.
+[2026-05-20 19:29:44] Data loaded from disk.
+[2026-05-20 19:30:01] User 'alice' logged in.
+[2026-05-20 19:31:14] Order[e44d9187] confirmed — items: [Watch] — total: $89.99
+[2026-05-20 19:31:14] Data saved to disk.
+[2026-05-20 19:33:56] Data saved to disk.
+[2026-05-20 19:34:04] User 'admin' logged in.
+[2026-05-20 19:34:10] Data saved to disk.
+[2026-05-20 19:34:19] User 'alice' logged in.
